@@ -3,7 +3,7 @@
 // Constants & Default Values
 // ============================================
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ORM_DATABASE_COMPATIBILITY = exports.DEFAULT_FRONTEND_PORT = exports.DEFAULT_BACKEND_PORT = exports.PACKAGE_MANAGERS = exports.STATE_MANAGEMENT_REACT = exports.STATE_MANAGEMENT_VUE = exports.STYLING_OPTIONS = exports.FRONTEND_FRAMEWORKS = exports.AUTH_STRATEGIES = exports.ORMS = exports.DATABASES = exports.LANGUAGES = exports.BACKEND_FRAMEWORKS = void 0;
+exports.ORM_DATABASE_COMPATIBILITY = exports.DEFAULT_FRONTEND_PORT = exports.DEFAULT_BACKEND_PORT = exports.PACKAGE_MANAGERS = exports.STATE_MANAGEMENT_REACT = exports.STATE_MANAGEMENT_VUE = exports.STYLING_OPTIONS = exports.FRONTEND_FRAMEWORKS = exports.MAILING_PROVIDERS = exports.AUTH_STRATEGIES = exports.ORMS = exports.DATABASES = exports.LANGUAGES = exports.BACKEND_FRAMEWORKS = void 0;
 exports.getCompatibleORMs = getCompatibleORMs;
 exports.getStateManagementOptions = getStateManagementOptions;
 // Backend Framework Choices
@@ -37,6 +37,12 @@ exports.AUTH_STRATEGIES = [
     { name: 'JWT (JSON Web Token)', value: 'jwt', description: 'Stateless authentication' },
     { name: 'Session', value: 'session', description: 'Server-side session storage' },
     { name: 'None', value: 'none', description: 'No authentication' },
+];
+// Mailing Provider Choices
+exports.MAILING_PROVIDERS = [
+    { name: 'Nodemailer', value: 'nodemailer', description: 'Classic email sending library with SMTP' },
+    { name: 'Resend', value: 'resend', description: 'Modern email API for developers' },
+    { name: 'None', value: 'none', description: 'No mailing setup' },
 ];
 // Frontend Framework Choices
 exports.FRONTEND_FRAMEWORKS = [

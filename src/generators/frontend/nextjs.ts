@@ -42,37 +42,37 @@ export class NextJSGenerator extends BaseGenerator {
 
   private async generatePackageJson(): Promise<void> {
     const dependencies: Record<string, string> = {
-      next: '^14.1.4',
-      react: '^18.2.0',
-      'react-dom': '^18.2.0',
-      axios: '^1.6.8',
+      next: '^15.1.0',
+      react: '^19.0.0',
+      'react-dom': '^19.0.0',
+      axios: '^1.7.9',
     };
 
     const devDependencies: Record<string, string> = {
-      '@types/node': '^20.11.30',
-      '@types/react': '^18.2.67',
-      '@types/react-dom': '^18.2.22',
-      typescript: '^5.4.3',
-      eslint: '^8.57.0',
-      'eslint-config-next': '^14.1.4',
-      prettier: '^3.2.5',
+      '@types/node': '^22.10.0',
+      '@types/react': '^19.0.0',
+      '@types/react-dom': '^19.0.0',
+      typescript: '^5.7.2',
+      eslint: '^9.17.0',
+      'eslint-config-next': '^15.1.0',
+      prettier: '^3.4.2',
     };
 
     // State management
     if (this.config.frontend.stateManagement === 'redux') {
-      dependencies['@reduxjs/toolkit'] = '^2.2.2';
-      dependencies['react-redux'] = '^9.1.0';
+      dependencies['@reduxjs/toolkit'] = '^2.5.0';
+      dependencies['react-redux'] = '^9.2.0';
     } else if (this.config.frontend.stateManagement === 'zustand') {
-      dependencies['zustand'] = '^4.5.2';
+      dependencies['zustand'] = '^5.0.2';
     }
 
     // Styling
     if (this.config.frontend.styling === 'tailwind') {
-      devDependencies['tailwindcss'] = '^3.4.1';
-      devDependencies['postcss'] = '^8.4.38';
-      devDependencies['autoprefixer'] = '^10.4.19';
+      devDependencies['tailwindcss'] = '^3.4.17';
+      devDependencies['postcss'] = '^8.4.49';
+      devDependencies['autoprefixer'] = '^10.4.20';
     } else if (this.config.frontend.styling === 'scss') {
-      devDependencies['sass'] = '^1.72.0';
+      devDependencies['sass'] = '^1.83.0';
     }
 
     const pkg = {

@@ -1,4 +1,18 @@
 import { type Ora } from 'ora';
+export interface CompletionConfig {
+    projectName: string;
+    projectStructure: 'monorepo' | 'separate';
+    backend?: {
+        framework?: string;
+        database?: string;
+        orm?: string;
+        mailing?: string;
+        port?: number;
+    };
+    frontend?: {
+        framework?: string;
+    };
+}
 /**
  * Log success message
  */
@@ -34,5 +48,5 @@ export declare function section(title: string): void;
 /**
  * Log completion message with next steps
  */
-export declare function complete(projectName: string, pm: string): void;
+export declare function complete(projectName: string, pm: string, config?: CompletionConfig): void;
 //# sourceMappingURL=logger.d.ts.map

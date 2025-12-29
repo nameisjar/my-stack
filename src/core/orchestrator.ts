@@ -10,6 +10,7 @@ import {
   FastifyGenerator,
   NestJSGenerator,
   PrismaGenerator,
+  MailingGenerator,
   VueGenerator,
   ReactGenerator,
   NextJSGenerator,
@@ -68,7 +69,16 @@ export class ProjectOrchestrator {
         success('Prisma configured');
       }
 
-      // Step 5: Generate frontend (if applicable)
+      // Step 5: Generate Mailing (if applicable)
+      if (this.config.backend.mailing !== 'none') {
+        currentStep++;
+        step(currentStep, totalSteps, 'Setting up mailing...');
+        const mailingGenerator = new MailingGenerator(this.config);
+        await mailingGenerator.generate();
+        success(`Mailing configured (${this.config.backend.mailing})`);
+      }
+
+      // Step 6: Generate frontend (if applicable)
       if (this.config.frontend.framework !== 'none') {
         currentStep++;
         step(currentStep, totalSteps, 'Generating frontend...');
@@ -76,7 +86,7 @@ export class ProjectOrchestrator {
         success(`Frontend generated (${this.config.frontend.framework})`);
       }
 
-      // Step 6: Generate Docker files (if enabled)
+      // Step 7: Generate Docker files (if enabled)
       if (this.config.docker) {
         currentStep++;
         step(currentStep, totalSteps, 'Generating Docker configuration...');
@@ -85,14 +95,14 @@ export class ProjectOrchestrator {
         success('Docker configuration generated');
       }
 
-      // Step 7: Generate README
+      // Step 8: Generate README
       currentStep++;
       step(currentStep, totalSteps, 'Generating documentation...');
       const readmeGenerator = new ReadmeGenerator(this.config);
       await readmeGenerator.generate();
       success('Documentation generated');
 
-      // Step 8: Initialize Git (if enabled)
+      // Step 9: Initialize Git (if enabled)
       if (this.config.initGit) {
         currentStep++;
         step(currentStep, totalSteps, 'Initializing git repository...');
@@ -109,6 +119,7 @@ export class ProjectOrchestrator {
     let steps = 4; // Base: directory, root files, backend, readme
 
     if (this.config.backend.orm === 'prisma') steps++;
+    if (this.config.backend.mailing !== 'none') steps++;
     if (this.config.frontend.framework !== 'none') steps++;
     if (this.config.docker) steps++;
     if (this.config.initGit) steps++;

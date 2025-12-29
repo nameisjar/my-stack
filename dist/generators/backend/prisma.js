@@ -119,8 +119,8 @@ module.exports = { prisma };
             // Add Prisma dependencies
             pkg.dependencies = pkg.dependencies || {};
             pkg.devDependencies = pkg.devDependencies || {};
-            pkg.dependencies['@prisma/client'] = '^5.11.0';
-            pkg.devDependencies['prisma'] = '^5.11.0';
+            pkg.dependencies['@prisma/client'] = '^6.2.0';
+            pkg.devDependencies['prisma'] = '^6.2.0';
             // Add Prisma scripts
             pkg.scripts = pkg.scripts || {};
             pkg.scripts['db:generate'] = 'prisma generate';

@@ -12,6 +12,7 @@ import type {
   Styling,
   StateManagement,
   PackageManager,
+  MailingProvider,
   PromptChoice,
 } from '../types/index.js';
 
@@ -50,6 +51,13 @@ export const AUTH_STRATEGIES: PromptChoice<AuthStrategy>[] = [
   { name: 'JWT (JSON Web Token)', value: 'jwt', description: 'Stateless authentication' },
   { name: 'Session', value: 'session', description: 'Server-side session storage' },
   { name: 'None', value: 'none', description: 'No authentication' },
+];
+
+// Mailing Provider Choices
+export const MAILING_PROVIDERS: PromptChoice<MailingProvider>[] = [
+  { name: 'Nodemailer', value: 'nodemailer', description: 'Classic email sending library with SMTP' },
+  { name: 'Resend', value: 'resend', description: 'Modern email API for developers' },
+  { name: 'None', value: 'none', description: 'No mailing setup' },
 ];
 
 // Frontend Framework Choices

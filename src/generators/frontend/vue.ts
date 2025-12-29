@@ -45,36 +45,36 @@ export class VueGenerator extends BaseGenerator {
 
   private async generatePackageJson(): Promise<void> {
     const dependencies: Record<string, string> = {
-      vue: '^3.4.21',
-      'vue-router': '^4.3.0',
-      axios: '^1.6.8',
+      vue: '^3.5.13',
+      'vue-router': '^4.5.0',
+      axios: '^1.7.9',
     };
 
     const devDependencies: Record<string, string> = {
-      '@vitejs/plugin-vue': '^5.0.4',
-      vite: '^5.2.6',
-      typescript: '^5.4.3',
-      'vue-tsc': '^2.0.7',
-      '@types/node': '^20.11.30',
-      eslint: '^8.57.0',
-      'eslint-plugin-vue': '^9.24.0',
-      prettier: '^3.2.5',
-      '@vue/eslint-config-typescript': '^13.0.0',
-      '@vue/eslint-config-prettier': '^9.0.0',
+      '@vitejs/plugin-vue': '^5.2.1',
+      vite: '^6.0.6',
+      typescript: '^5.7.2',
+      'vue-tsc': '^2.2.0',
+      '@types/node': '^22.10.0',
+      eslint: '^9.17.0',
+      'eslint-plugin-vue': '^9.32.0',
+      prettier: '^3.4.2',
+      '@vue/eslint-config-typescript': '^14.2.0',
+      '@vue/eslint-config-prettier': '^10.1.0',
     };
 
     // State management
     if (this.config.frontend.stateManagement === 'pinia') {
-      dependencies['pinia'] = '^2.1.7';
+      dependencies['pinia'] = '^2.3.0';
     }
 
     // Styling
     if (this.config.frontend.styling === 'tailwind') {
-      devDependencies['tailwindcss'] = '^3.4.1';
-      devDependencies['postcss'] = '^8.4.38';
-      devDependencies['autoprefixer'] = '^10.4.19';
+      devDependencies['tailwindcss'] = '^3.4.17';
+      devDependencies['postcss'] = '^8.4.49';
+      devDependencies['autoprefixer'] = '^10.4.20';
     } else if (this.config.frontend.styling === 'scss') {
-      devDependencies['sass'] = '^1.72.0';
+      devDependencies['sass'] = '^1.83.0';
     }
 
     const pkg = {

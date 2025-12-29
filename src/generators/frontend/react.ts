@@ -44,42 +44,42 @@ export class ReactGenerator extends BaseGenerator {
 
   private async generatePackageJson(): Promise<void> {
     const dependencies: Record<string, string> = {
-      react: '^18.2.0',
-      'react-dom': '^18.2.0',
-      'react-router-dom': '^6.22.3',
-      axios: '^1.6.8',
+      react: '^19.0.0',
+      'react-dom': '^19.0.0',
+      'react-router-dom': '^7.1.1',
+      axios: '^1.7.9',
     };
 
     const devDependencies: Record<string, string> = {
-      '@types/react': '^18.2.67',
-      '@types/react-dom': '^18.2.22',
-      '@vitejs/plugin-react': '^4.2.1',
-      vite: '^5.2.6',
-      typescript: '^5.4.3',
-      '@typescript-eslint/eslint-plugin': '^7.4.0',
-      '@typescript-eslint/parser': '^7.4.0',
-      eslint: '^8.57.0',
-      'eslint-plugin-react': '^7.34.1',
-      'eslint-plugin-react-hooks': '^4.6.0',
-      'eslint-plugin-react-refresh': '^0.4.6',
-      prettier: '^3.2.5',
+      '@types/react': '^19.0.0',
+      '@types/react-dom': '^19.0.0',
+      '@vitejs/plugin-react': '^4.3.4',
+      vite: '^6.0.6',
+      typescript: '^5.7.2',
+      '@typescript-eslint/eslint-plugin': '^8.19.0',
+      '@typescript-eslint/parser': '^8.19.0',
+      eslint: '^9.17.0',
+      'eslint-plugin-react': '^7.37.2',
+      'eslint-plugin-react-hooks': '^5.1.0',
+      'eslint-plugin-react-refresh': '^0.4.16',
+      prettier: '^3.4.2',
     };
 
     // State management
     if (this.config.frontend.stateManagement === 'redux') {
-      dependencies['@reduxjs/toolkit'] = '^2.2.2';
-      dependencies['react-redux'] = '^9.1.0';
+      dependencies['@reduxjs/toolkit'] = '^2.5.0';
+      dependencies['react-redux'] = '^9.2.0';
     } else if (this.config.frontend.stateManagement === 'zustand') {
-      dependencies['zustand'] = '^4.5.2';
+      dependencies['zustand'] = '^5.0.2';
     }
 
     // Styling
     if (this.config.frontend.styling === 'tailwind') {
-      devDependencies['tailwindcss'] = '^3.4.1';
-      devDependencies['postcss'] = '^8.4.38';
-      devDependencies['autoprefixer'] = '^10.4.19';
+      devDependencies['tailwindcss'] = '^3.4.17';
+      devDependencies['postcss'] = '^8.4.49';
+      devDependencies['autoprefixer'] = '^10.4.20';
     } else if (this.config.frontend.styling === 'scss') {
-      devDependencies['sass'] = '^1.72.0';
+      devDependencies['sass'] = '^1.83.0';
     }
 
     const pkg = {

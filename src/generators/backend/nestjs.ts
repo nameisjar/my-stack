@@ -45,34 +45,34 @@ export class NestJSGenerator extends BaseGenerator {
 
   private async generatePackageJson(): Promise<void> {
     const dependencies: Record<string, string> = {
-      '@nestjs/common': '^10.3.3',
-      '@nestjs/core': '^10.3.3',
-      '@nestjs/platform-express': '^10.3.3',
-      '@nestjs/config': '^3.2.0',
+      '@nestjs/common': '^10.4.15',
+      '@nestjs/core': '^10.4.15',
+      '@nestjs/platform-express': '^10.4.15',
+      '@nestjs/config': '^3.3.0',
       '@nestjs/terminus': '^10.2.3',
       'class-transformer': '^0.5.1',
       'class-validator': '^0.14.1',
-      'reflect-metadata': '^0.2.1',
+      'reflect-metadata': '^0.2.2',
       rxjs: '^7.8.1',
     };
 
     const devDependencies: Record<string, string> = {
-      '@nestjs/cli': '^10.3.2',
-      '@nestjs/schematics': '^10.1.1',
-      '@nestjs/testing': '^10.3.3',
-      '@types/express': '^4.17.21',
-      '@types/node': '^20.11.30',
-      '@typescript-eslint/eslint-plugin': '^7.4.0',
-      '@typescript-eslint/parser': '^7.4.0',
-      eslint: '^8.57.0',
+      '@nestjs/cli': '^10.4.9',
+      '@nestjs/schematics': '^10.2.3',
+      '@nestjs/testing': '^10.4.15',
+      '@types/express': '^5.0.0',
+      '@types/node': '^22.10.0',
+      '@typescript-eslint/eslint-plugin': '^8.19.0',
+      '@typescript-eslint/parser': '^8.19.0',
+      eslint: '^9.17.0',
       'eslint-config-prettier': '^9.1.0',
-      'eslint-plugin-prettier': '^5.1.3',
-      prettier: '^3.2.5',
+      'eslint-plugin-prettier': '^5.2.1',
+      prettier: '^3.4.2',
       'source-map-support': '^0.5.21',
       'ts-loader': '^9.5.1',
       'ts-node': '^10.9.2',
       'tsconfig-paths': '^4.2.0',
-      typescript: '^5.4.3',
+      typescript: '^5.7.2',
     };
 
     if (this.config.backend.auth === 'jwt') {

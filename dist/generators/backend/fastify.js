@@ -39,32 +39,32 @@ class FastifyGenerator extends base_js_1.BaseGenerator {
     async generatePackageJson() {
         const isTs = this.isTypeScript;
         const dependencies = {
-            fastify: '^4.26.2',
-            '@fastify/cors': '^9.0.1',
-            '@fastify/helmet': '^11.1.1',
-            '@fastify/sensible': '^5.6.0',
-            '@fastify/env': '^4.3.0',
-            'fastify-plugin': '^4.5.1',
-            dotenv: '^16.4.5',
+            fastify: '^5.2.1',
+            '@fastify/cors': '^10.0.1',
+            '@fastify/helmet': '^12.0.1',
+            '@fastify/sensible': '^6.0.1',
+            '@fastify/env': '^5.0.1',
+            'fastify-plugin': '^5.0.1',
+            dotenv: '^16.4.7',
         };
         const devDependencies = {
-            '@types/node': '^20.11.30',
-            eslint: '^8.57.0',
-            prettier: '^3.2.5',
+            '@types/node': '^22.10.0',
+            eslint: '^9.17.0',
+            prettier: '^3.4.2',
         };
         if (isTs) {
             Object.assign(devDependencies, {
-                typescript: '^5.4.3',
-                tsx: '^4.7.1',
-                '@typescript-eslint/eslint-plugin': '^7.4.0',
-                '@typescript-eslint/parser': '^7.4.0',
+                typescript: '^5.7.2',
+                tsx: '^4.19.2',
+                '@typescript-eslint/eslint-plugin': '^8.19.0',
+                '@typescript-eslint/parser': '^8.19.0',
             });
         }
         else {
-            devDependencies['nodemon'] = '^3.1.0';
+            devDependencies['nodemon'] = '^3.1.9';
         }
         if (this.config.backend.auth === 'jwt') {
-            dependencies['@fastify/jwt'] = '^8.0.0';
+            dependencies['@fastify/jwt'] = '^9.0.1';
             dependencies['bcryptjs'] = '^2.4.3';
             if (isTs)
                 devDependencies['@types/bcryptjs'] = '^2.4.6';

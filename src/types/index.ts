@@ -9,6 +9,9 @@ export type Database = 'postgresql' | 'mysql' | 'mongodb' | 'sqlite' | 'none';
 export type ORM = 'prisma' | 'sequelize' | 'mongoose' | 'none';
 export type AuthStrategy = 'jwt' | 'session' | 'none';
 
+// Mailing Options
+export type MailingProvider = 'nodemailer' | 'resend' | 'none';
+
 // Frontend Options
 export type FrontendFramework = 'vue' | 'react' | 'nextjs' | 'none';
 export type Styling = 'tailwind' | 'css' | 'scss';
@@ -31,6 +34,7 @@ export interface ProjectConfig {
     database: Database;
     orm: ORM;
     auth: AuthStrategy;
+    mailing: MailingProvider;
     port: number;
   };
 

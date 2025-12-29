@@ -118,6 +118,15 @@ async function runPrompts() {
             })),
         },
         {
+            type: 'list',
+            name: 'mailing',
+            message: 'Mailing provider:',
+            choices: index_js_1.MAILING_PROVIDERS.map((m) => ({
+                name: `${m.name} - ${chalk_1.default.gray(m.description)}`,
+                value: m.value,
+            })),
+        },
+        {
             type: 'number',
             name: 'port',
             message: 'Backend port:',
@@ -238,6 +247,7 @@ async function runPrompts() {
             database: backendConfig.database,
             orm: backendConfig.orm,
             auth: backendConfig.auth,
+            mailing: backendConfig.mailing,
             port: backendConfig.port,
         },
         frontend: {
@@ -276,6 +286,7 @@ function showSummary(config) {
     console.log(`   Database:   ${chalk_1.default.green(config.backend.database)}`);
     console.log(`   ORM:        ${chalk_1.default.green(config.backend.orm)}`);
     console.log(`   Auth:       ${chalk_1.default.green(config.backend.auth)}`);
+    console.log(`   Mailing:    ${chalk_1.default.green(config.backend.mailing)}`);
     console.log(`   Port:       ${chalk_1.default.green(config.backend.port)}`);
     console.log();
     if (config.frontend.framework !== 'none') {

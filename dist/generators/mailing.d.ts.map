@@ -1,0 +1,1 @@
+{"version":3,"file":"mailing.d.ts","sourceRoot":"","sources":["../../src/generators/mailing.ts"],"names":[],"mappings":"AAMA,OAAO,EAAE,aAAa,EAAE,MAAM,WAAW,CAAC;AAG1C,qBAAa,gBAAiB,SAAQ,aAAa;IACjD,IAAI,SAAa;IAEX,QAAQ,IAAI,OAAO,CAAC,IAAI,CAAC;YAiBjB,kBAAkB;YA2HlB,sBAAsB;YA8XtB,oBAAoB;YAqEpB,iBAAiB;IAoC/B;;OAEG;IACH,eAAe,IAAI,MAAM;CAuB1B"}

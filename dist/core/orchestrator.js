@@ -43,14 +43,22 @@ class ProjectOrchestrator {
                 await prismaGenerator.generate();
                 (0, index_js_2.success)('Prisma configured');
             }
-            // Step 5: Generate frontend (if applicable)
+            // Step 5: Generate Mailing (if applicable)
+            if (this.config.backend.mailing !== 'none') {
+                currentStep++;
+                (0, index_js_2.step)(currentStep, totalSteps, 'Setting up mailing...');
+                const mailingGenerator = new index_js_1.MailingGenerator(this.config);
+                await mailingGenerator.generate();
+                (0, index_js_2.success)(`Mailing configured (${this.config.backend.mailing})`);
+            }
+            // Step 6: Generate frontend (if applicable)
             if (this.config.frontend.framework !== 'none') {
                 currentStep++;
                 (0, index_js_2.step)(currentStep, totalSteps, 'Generating frontend...');
                 await this.generateFrontend();
                 (0, index_js_2.success)(`Frontend generated (${this.config.frontend.framework})`);
             }
-            // Step 6: Generate Docker files (if enabled)
+            // Step 7: Generate Docker files (if enabled)
             if (this.config.docker) {
                 currentStep++;
                 (0, index_js_2.step)(currentStep, totalSteps, 'Generating Docker configuration...');
@@ -58,13 +66,13 @@ class ProjectOrchestrator {
                 await dockerGenerator.generate();
                 (0, index_js_2.success)('Docker configuration generated');
             }
-            // Step 7: Generate README
+            // Step 8: Generate README
             currentStep++;
             (0, index_js_2.step)(currentStep, totalSteps, 'Generating documentation...');
             const readmeGenerator = new index_js_1.ReadmeGenerator(this.config);
             await readmeGenerator.generate();
             (0, index_js_2.success)('Documentation generated');
-            // Step 8: Initialize Git (if enabled)
+            // Step 9: Initialize Git (if enabled)
             if (this.config.initGit) {
                 currentStep++;
                 (0, index_js_2.step)(currentStep, totalSteps, 'Initializing git repository...');
@@ -80,6 +88,8 @@ class ProjectOrchestrator {
     calculateTotalSteps() {
         let steps = 4; // Base: directory, root files, backend, readme
         if (this.config.backend.orm === 'prisma')
+            steps++;
+        if (this.config.backend.mailing !== 'none')
             steps++;
         if (this.config.frontend.framework !== 'none')
             steps++;

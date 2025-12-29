@@ -17,13 +17,15 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReadmeGenerator = exports.DockerGenerator = exports.BaseGenerator = void 0;
+exports.MailingGenerator = exports.ReadmeGenerator = exports.DockerGenerator = exports.BaseGenerator = void 0;
 var base_js_1 = require("./base.js");
 Object.defineProperty(exports, "BaseGenerator", { enumerable: true, get: function () { return base_js_1.BaseGenerator; } });
 var docker_js_1 = require("./docker.js");
 Object.defineProperty(exports, "DockerGenerator", { enumerable: true, get: function () { return docker_js_1.DockerGenerator; } });
 var readme_js_1 = require("./readme.js");
 Object.defineProperty(exports, "ReadmeGenerator", { enumerable: true, get: function () { return readme_js_1.ReadmeGenerator; } });
+var mailing_js_1 = require("./mailing.js");
+Object.defineProperty(exports, "MailingGenerator", { enumerable: true, get: function () { return mailing_js_1.MailingGenerator; } });
 __exportStar(require("./backend/index.js"), exports);
 __exportStar(require("./frontend/index.js"), exports);
 //# sourceMappingURL=index.js.map

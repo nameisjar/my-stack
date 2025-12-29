@@ -13,6 +13,7 @@ import type {
   Database,
   ORM,
   AuthStrategy,
+  MailingProvider,
   FrontendFramework,
   Styling,
   StateManagement,
@@ -25,6 +26,7 @@ import {
   DATABASES,
   ORMS,
   AUTH_STRATEGIES,
+  MAILING_PROVIDERS,
   FRONTEND_FRAMEWORKS,
   STYLING_OPTIONS,
   PACKAGE_MANAGERS,
@@ -142,6 +144,15 @@ export async function runPrompts(): Promise<ProjectConfig> {
       choices: AUTH_STRATEGIES.map((a) => ({
         name: `${a.name} - ${chalk.gray(a.description)}`,
         value: a.value,
+      })),
+    },
+    {
+      type: 'list',
+      name: 'mailing',
+      message: 'Mailing provider:',
+      choices: MAILING_PROVIDERS.map((m) => ({
+        name: `${m.name} - ${chalk.gray(m.description)}`,
+        value: m.value,
       })),
     },
     {
@@ -275,6 +286,7 @@ export async function runPrompts(): Promise<ProjectConfig> {
       database: backendConfig.database as Database,
       orm: backendConfig.orm as ORM,
       auth: backendConfig.auth as AuthStrategy,
+      mailing: backendConfig.mailing as MailingProvider,
       port: backendConfig.port,
     },
     frontend: {
@@ -317,6 +329,7 @@ export function showSummary(config: ProjectConfig): void {
   console.log(`   Database:   ${chalk.green(config.backend.database)}`);
   console.log(`   ORM:        ${chalk.green(config.backend.orm)}`);
   console.log(`   Auth:       ${chalk.green(config.backend.auth)}`);
+  console.log(`   Mailing:    ${chalk.green(config.backend.mailing)}`);
   console.log(`   Port:       ${chalk.green(config.backend.port)}`);
   console.log();
 

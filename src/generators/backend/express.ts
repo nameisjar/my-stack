@@ -40,32 +40,32 @@ export class ExpressGenerator extends BaseGenerator {
     const isTs = this.isTypeScript;
     
     const dependencies: Record<string, string> = {
-      express: '^4.18.2',
+      express: '^4.21.2',
       cors: '^2.8.5',
-      helmet: '^7.1.0',
+      helmet: '^8.0.0',
       morgan: '^1.10.0',
-      dotenv: '^16.4.5',
+      dotenv: '^16.4.7',
     };
 
     const devDependencies: Record<string, string> = {
-      '@types/node': '^20.11.30',
-      eslint: '^8.57.0',
-      prettier: '^3.2.5',
+      '@types/node': '^22.10.0',
+      eslint: '^9.17.0',
+      prettier: '^3.4.2',
     };
 
     if (isTs) {
       Object.assign(devDependencies, {
-        typescript: '^5.4.3',
-        tsx: '^4.7.1',
-        '@types/express': '^4.17.21',
+        typescript: '^5.7.2',
+        tsx: '^4.19.2',
+        '@types/express': '^5.0.0',
         '@types/cors': '^2.8.17',
         '@types/morgan': '^1.9.9',
-        '@typescript-eslint/eslint-plugin': '^7.4.0',
-        '@typescript-eslint/parser': '^7.4.0',
+        '@typescript-eslint/eslint-plugin': '^8.19.0',
+        '@typescript-eslint/parser': '^8.19.0',
       });
     } else {
       Object.assign(devDependencies, {
-        nodemon: '^3.1.0',
+        nodemon: '^3.1.9',
       });
     }
 

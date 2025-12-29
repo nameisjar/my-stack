@@ -38,8 +38,21 @@ program
         // Generate project
         const orchestrator = new index_js_2.ProjectOrchestrator(config);
         await orchestrator.generate();
-        // Show completion message
-        (0, index_js_3.complete)(config.projectName, config.packageManager);
+        // Show completion message with detailed instructions
+        (0, index_js_3.complete)(config.projectName, config.packageManager, {
+            projectName: config.projectName,
+            projectStructure: config.structure,
+            backend: {
+                framework: config.backend.framework,
+                database: config.backend.database,
+                orm: config.backend.orm,
+                mailing: config.backend.mailing,
+                port: config.backend.port,
+            },
+            frontend: {
+                framework: config.frontend.framework,
+            },
+        });
     }
     catch (err) {
         if (err instanceof Error) {

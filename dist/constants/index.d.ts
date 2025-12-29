@@ -1,9 +1,10 @@
-import type { BackendFramework, BackendLanguage, Database, ORM, AuthStrategy, FrontendFramework, Styling, StateManagement, PackageManager, PromptChoice } from '../types/index.js';
+import type { BackendFramework, BackendLanguage, Database, ORM, AuthStrategy, FrontendFramework, Styling, StateManagement, PackageManager, MailingProvider, PromptChoice } from '../types/index.js';
 export declare const BACKEND_FRAMEWORKS: PromptChoice<BackendFramework>[];
 export declare const LANGUAGES: PromptChoice<BackendLanguage>[];
 export declare const DATABASES: PromptChoice<Database>[];
 export declare const ORMS: PromptChoice<ORM>[];
 export declare const AUTH_STRATEGIES: PromptChoice<AuthStrategy>[];
+export declare const MAILING_PROVIDERS: PromptChoice<MailingProvider>[];
 export declare const FRONTEND_FRAMEWORKS: PromptChoice<FrontendFramework>[];
 export declare const STYLING_OPTIONS: PromptChoice<Styling>[];
 export declare const STATE_MANAGEMENT_VUE: PromptChoice<StateManagement>[];
