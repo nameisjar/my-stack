@@ -27,6 +27,10 @@ export declare function removePath(targetPath: string): Promise<void>;
  */
 export declare function readFile(filePath: string): Promise<string>;
 /**
+ * Read JSON file
+ */
+export declare function readJsonFile<T = Record<string, unknown>>(filePath: string): Promise<T>;
+/**
  * Create multiple directories
  */
 export declare function createDirectories(basePath: string, dirs: string[]): Promise<void>;

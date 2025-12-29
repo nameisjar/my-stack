@@ -114,8 +114,7 @@ module.exports = { prisma };
         // Read existing package.json and add Prisma
         const pkgPath = path_1.default.join(this.backendPath, 'package.json');
         try {
-            const fs = await import('fs-extra');
-            const pkg = await fs.readJson(pkgPath);
+            const pkg = await (0, index_js_1.readJsonFile)(pkgPath);
             // Add Prisma dependencies
             pkg.dependencies = pkg.dependencies || {};
             pkg.devDependencies = pkg.devDependencies || {};
@@ -123,17 +122,18 @@ module.exports = { prisma };
             pkg.devDependencies['prisma'] = '^6.2.0';
             // Add Prisma scripts
             pkg.scripts = pkg.scripts || {};
-            pkg.scripts['db:generate'] = 'prisma generate';
-            pkg.scripts['db:push'] = 'prisma db push';
-            pkg.scripts['db:migrate'] = 'prisma migrate dev';
-            pkg.scripts['db:studio'] = 'prisma studio';
-            pkg.scripts['db:seed'] = this.isTypeScript
+            pkg.scripts['prisma:generate'] = 'prisma generate';
+            pkg.scripts['prisma:push'] = 'prisma db push';
+            pkg.scripts['prisma:migrate'] = 'prisma migrate dev';
+            pkg.scripts['prisma:studio'] = 'prisma studio';
+            pkg.scripts['prisma:seed'] = this.isTypeScript
                 ? 'tsx prisma/seed.ts'
                 : 'node prisma/seed.js';
-            await fs.writeJson(pkgPath, pkg, { spaces: 2 });
+            await (0, index_js_1.writeJsonFile)(pkgPath, pkg);
         }
-        catch {
-            // Package.json doesn't exist yet, will be created by backend generator
+        catch (err) {
+            // Log error for debugging
+            console.error('Failed to update package.json with Prisma:', err);
         }
     }
 }

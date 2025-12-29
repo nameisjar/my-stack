@@ -57,6 +57,13 @@ export async function readFile(filePath: string): Promise<string> {
 }
 
 /**
+ * Read JSON file
+ */
+export async function readJsonFile<T = Record<string, unknown>>(filePath: string): Promise<T> {
+  return fs.readJson(filePath);
+}
+
+/**
  * Create multiple directories
  */
 export async function createDirectories(basePath: string, dirs: string[]): Promise<void> {

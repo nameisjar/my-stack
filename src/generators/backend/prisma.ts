@@ -4,8 +4,17 @@
 
 import path from 'path';
 import { BaseGenerator } from '../base.js';
-import { writeFile, writeJsonFile, ensureDir } from '../../utils/index.js';
+import { writeFile, writeJsonFile, ensureDir, readJsonFile } from '../../utils/index.js';
 import type { ProjectConfig } from '../../types/index.js';
+
+interface PackageJson {
+  name?: string;
+  version?: string;
+  scripts?: Record<string, string>;
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+  [key: string]: unknown;
+}
 
 export class PrismaGenerator extends BaseGenerator {
   name = 'Prisma';
@@ -124,8 +133,7 @@ module.exports = { prisma };
     const pkgPath = path.join(this.backendPath, 'package.json');
     
     try {
-      const fs = await import('fs-extra');
-      const pkg = await fs.readJson(pkgPath);
+      const pkg = await readJsonFile<PackageJson>(pkgPath);
       
       // Add Prisma dependencies
       pkg.dependencies = pkg.dependencies || {};
@@ -136,17 +144,18 @@ module.exports = { prisma };
       
       // Add Prisma scripts
       pkg.scripts = pkg.scripts || {};
-      pkg.scripts['db:generate'] = 'prisma generate';
-      pkg.scripts['db:push'] = 'prisma db push';
-      pkg.scripts['db:migrate'] = 'prisma migrate dev';
-      pkg.scripts['db:studio'] = 'prisma studio';
-      pkg.scripts['db:seed'] = this.isTypeScript 
+      pkg.scripts['prisma:generate'] = 'prisma generate';
+      pkg.scripts['prisma:push'] = 'prisma db push';
+      pkg.scripts['prisma:migrate'] = 'prisma migrate dev';
+      pkg.scripts['prisma:studio'] = 'prisma studio';
+      pkg.scripts['prisma:seed'] = this.isTypeScript 
         ? 'tsx prisma/seed.ts' 
         : 'node prisma/seed.js';
       
-      await fs.writeJson(pkgPath, pkg, { spaces: 2 });
-    } catch {
-      // Package.json doesn't exist yet, will be created by backend generator
+      await writeJsonFile(pkgPath, pkg);
+    } catch (err) {
+      // Log error for debugging
+      console.error('Failed to update package.json with Prisma:', err);
     }
   }
 }

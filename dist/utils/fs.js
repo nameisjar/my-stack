@@ -13,6 +13,7 @@ exports.copyPath = copyPath;
 exports.pathExists = pathExists;
 exports.removePath = removePath;
 exports.readFile = readFile;
+exports.readJsonFile = readJsonFile;
 exports.createDirectories = createDirectories;
 exports.writeFiles = writeFiles;
 const fs_extra_1 = __importDefault(require("fs-extra"));
@@ -60,6 +61,12 @@ async function removePath(targetPath) {
  */
 async function readFile(filePath) {
     return fs_extra_1.default.readFile(filePath, 'utf-8');
+}
+/**
+ * Read JSON file
+ */
+async function readJsonFile(filePath) {
+    return fs_extra_1.default.readJson(filePath);
 }
 /**
  * Create multiple directories
