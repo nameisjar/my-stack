@@ -40,6 +40,8 @@ class VueGenerator extends base_js_1.BaseGenerator {
             this.generateStyles(),
             this.generateEnvExample(),
             this.generateEslintConfig(),
+            this.generateComposables(),
+            this.generateFavicon(),
         ]);
     }
     async generatePackageJson() {
@@ -561,7 +563,8 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      // TODO: Implement proper auth handling - redirect to login page when available
+      console.warn('Unauthorized request - token removed. Implement login page for proper auth flow.');
     }
     return Promise.reject(error);
   }
@@ -592,9 +595,8 @@ export default api;
         await (0, index_js_1.writeFile)(path_1.default.join(this.frontendPath, 'src', 'services', 'api.ts'), content);
     }
     async generateStores() {
-        if (this.config.frontend.stateManagement !== 'pinia')
-            return;
-        const content = `import { ref, computed } from 'vue';
+        if (this.config.frontend.stateManagement === 'pinia') {
+            const content = `import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 
 export const useCounterStore = defineStore('counter', () => {
@@ -629,7 +631,19 @@ export const useUserStore = defineStore('user', () => {
   return { user, isAuthenticated, setUser, logout };
 });
 `;
-        await (0, index_js_1.writeFile)(path_1.default.join(this.frontendPath, 'src', 'stores', 'index.ts'), content);
+            await (0, index_js_1.writeFile)(path_1.default.join(this.frontendPath, 'src', 'stores', 'index.ts'), content);
+        }
+        else {
+            // No state management (Pinia not selected) - create placeholder file  
+            const placeholderContent = `// State management is not configured for this project.
+// If you need state management later, consider:
+// - Pinia: npm install pinia (recommended for Vue 3)
+// - Vuex: npm install vuex@next
+
+export {};
+`;
+            await (0, index_js_1.writeFile)(path_1.default.join(this.frontendPath, 'src', 'stores', 'index.ts'), placeholderContent);
+        }
     }
     async generateStyles() {
         const hasTailwind = this.config.frontend.styling === 'tailwind';
@@ -693,6 +707,106 @@ VITE_APP_TITLE=${this.config.projectName}
             singleQuote: true,
             tabWidth: 2,
         });
+    }
+    async generateComposables() {
+        // useDebounce composable
+        const useDebounce = `import { ref, watch, type Ref } from 'vue';
+
+export function useDebounce<T>(value: Ref<T>, delay: number = 500): Ref<T> {
+  const debouncedValue = ref(value.value) as Ref<T>;
+  let timeout: ReturnType<typeof setTimeout>;
+
+  watch(value, (newValue) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      debouncedValue.value = newValue;
+    }, delay);
+  });
+
+  return debouncedValue;
+}
+`;
+        await (0, index_js_1.writeFile)(path_1.default.join(this.frontendPath, 'src', 'composables', 'useDebounce.ts'), useDebounce);
+        // useLocalStorage composable
+        const useLocalStorage = `import { ref, watch, type Ref } from 'vue';
+
+export function useLocalStorage<T>(key: string, initialValue: T): Ref<T> {
+  const storedValue = ref(initialValue) as Ref<T>;
+
+  // Initialize from localStorage
+  if (typeof window !== 'undefined') {
+    try {
+      const item = window.localStorage.getItem(key);
+      if (item) {
+        storedValue.value = JSON.parse(item);
+      }
+    } catch (error) {
+      console.warn(\`Error reading localStorage key "\${key}":\`, error);
+    }
+  }
+
+  // Watch for changes and sync to localStorage
+  watch(storedValue, (newValue) => {
+    if (typeof window !== 'undefined') {
+      try {
+        window.localStorage.setItem(key, JSON.stringify(newValue));
+      } catch (error) {
+        console.warn(\`Error setting localStorage key "\${key}":\`, error);
+      }
+    }
+  }, { deep: true });
+
+  return storedValue;
+}
+`;
+        await (0, index_js_1.writeFile)(path_1.default.join(this.frontendPath, 'src', 'composables', 'useLocalStorage.ts'), useLocalStorage);
+        // useFetch composable
+        const useFetch = `import { ref, type Ref } from 'vue';
+import { apiService } from '@/services/api';
+
+interface UseFetchReturn<T> {
+  data: Ref<T | null>;
+  error: Ref<Error | null>;
+  loading: Ref<boolean>;
+  execute: () => Promise<void>;
+}
+
+export function useFetch<T>(fetcher: () => Promise<T>): UseFetchReturn<T> {
+  const data = ref<T | null>(null) as Ref<T | null>;
+  const error = ref<Error | null>(null);
+  const loading = ref(false);
+
+  const execute = async () => {
+    loading.value = true;
+    error.value = null;
+    try {
+      data.value = await fetcher();
+    } catch (e) {
+      error.value = e instanceof Error ? e : new Error(String(e));
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  return { data, error, loading, execute };
+}
+`;
+        await (0, index_js_1.writeFile)(path_1.default.join(this.frontendPath, 'src', 'composables', 'useFetch.ts'), useFetch);
+        // Index export
+        const index = `export * from './useDebounce';
+export * from './useLocalStorage';
+export * from './useFetch';
+`;
+        await (0, index_js_1.writeFile)(path_1.default.join(this.frontendPath, 'src', 'composables', 'index.ts'), index);
+    }
+    async generateFavicon() {
+        // Simple SVG favicon for Vite/Vue
+        const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <polygon points="50,5 95,95 5,95" fill="#42b883"/>
+  <polygon points="50,20 80,85 20,85" fill="#35495e"/>
+</svg>
+`;
+        await (0, index_js_1.writeFile)(path_1.default.join(this.frontendPath, 'public', 'vite.svg'), favicon);
     }
 }
 exports.VueGenerator = VueGenerator;

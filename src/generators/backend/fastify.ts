@@ -44,6 +44,7 @@ export class FastifyGenerator extends BaseGenerator {
       '@fastify/helmet': '^11.1.1',
       '@fastify/sensible': '^5.6.0',
       '@fastify/env': '^4.3.0',
+      'fastify-plugin': '^4.5.1',
       dotenv: '^16.4.5',
     };
 

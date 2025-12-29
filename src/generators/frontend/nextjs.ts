@@ -26,6 +26,7 @@ export class NextJSGenerator extends BaseGenerator {
       this.generatePackageJson(),
       this.generateNextConfig(),
       this.generateTsConfig(),
+      this.generateNextEnvDts(),
       this.generateLayout(),
       this.generatePages(),
       this.generateComponents(),
@@ -34,6 +35,8 @@ export class NextJSGenerator extends BaseGenerator {
       this.generateStyles(),
       this.generateEnvExample(),
       this.generateEslintConfig(),
+      this.generateHooks(),
+      this.generateFavicon(),
     ]);
   }
 
@@ -93,6 +96,8 @@ export class NextJSGenerator extends BaseGenerator {
   private async generateNextConfig(): Promise<void> {
     const content = `/** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Enable standalone output for Docker deployments
+  output: 'standalone',
   async rewrites() {
     return [
       {
@@ -386,7 +391,8 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401 && typeof window !== 'undefined') {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      // TODO: Implement proper auth handling - redirect to login page when available
+      console.warn('Unauthorized request - token removed. Implement login page for proper auth flow.');
     }
     return Promise.reject(error);
   }
@@ -562,6 +568,17 @@ export const useUserStore = create<UserState>((set) => ({
 `;
 
       await writeFile(path.join(this.frontendPath, 'src', 'store', 'index.ts'), storeContent);
+    } else {
+      // No state management - create placeholder file
+      const placeholderContent = `// State management is not configured for this project.
+// If you need state management later, consider:
+// - Redux Toolkit: npm install @reduxjs/toolkit react-redux
+// - Zustand: npm install zustand
+// - Jotai: npm install jotai
+
+export {};
+`;
+      await writeFile(path.join(this.frontendPath, 'src', 'store', 'index.ts'), placeholderContent);
     }
   }
 
@@ -651,5 +668,95 @@ NEXT_PUBLIC_APP_TITLE=${this.config.projectName}
       singleQuote: true,
       tabWidth: 2,
     });
+  }
+
+  private async generateNextEnvDts(): Promise<void> {
+    const content = `/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/basic-features/typescript for more information.
+`;
+
+    await writeFile(path.join(this.frontendPath, 'next-env.d.ts'), content);
+  }
+
+  private async generateHooks(): Promise<void> {
+    // useDebounce hook
+    const useDebounce = `import { useState, useEffect } from 'react';
+
+export function useDebounce<T>(value: T, delay: number = 500): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+`;
+
+    await writeFile(path.join(this.frontendPath, 'src', 'hooks', 'useDebounce.ts'), useDebounce);
+
+    // useLocalStorage hook
+    const useLocalStorage = `'use client';
+
+import { useState, useEffect } from 'react';
+
+export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
+  const [storedValue, setStoredValue] = useState<T>(initialValue);
+
+  useEffect(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      if (item) {
+        setStoredValue(JSON.parse(item));
+      }
+    } catch (error) {
+      console.warn(\`Error reading localStorage key "\${key}":\`, error);
+    }
+  }, [key]);
+
+  const setValue = (value: T) => {
+    try {
+      setStoredValue(value);
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.warn(\`Error setting localStorage key "\${key}":\`, error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
+`;
+
+    await writeFile(path.join(this.frontendPath, 'src', 'hooks', 'useLocalStorage.ts'), useLocalStorage);
+
+    // Index export
+    const index = `export * from './useDebounce';
+export * from './useLocalStorage';
+`;
+
+    await writeFile(path.join(this.frontendPath, 'src', 'hooks', 'index.ts'), index);
+  }
+
+  private async generateFavicon(): Promise<void> {
+    // Simple SVG favicon
+    const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="20" fill="#0070f3"/>
+  <text x="50" y="68" font-family="system-ui, sans-serif" font-size="50" font-weight="bold" fill="white" text-anchor="middle">N</text>
+</svg>
+`;
+
+    await writeFile(path.join(this.frontendPath, 'public', 'favicon.svg'), favicon);
+
+    // Also create icon.svg for Next.js app router
+    await writeFile(path.join(this.frontendPath, 'src', 'app', 'icon.svg'), favicon);
   }
 }

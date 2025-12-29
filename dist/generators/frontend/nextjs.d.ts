@@ -14,5 +14,8 @@ export declare class NextJSGenerator extends BaseGenerator {
     private generateStyles;
     private generateEnvExample;
     private generateEslintConfig;
+    private generateNextEnvDts;
+    private generateHooks;
+    private generateFavicon;
 }
 //# sourceMappingURL=nextjs.d.ts.map

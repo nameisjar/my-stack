@@ -168,8 +168,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   
-  // Global prefix
-  app.setGlobalPrefix('api');
+  // Global prefix for all routes except health
+  app.setGlobalPrefix('api', {
+    exclude: ['health', 'health/detailed'],
+  });
   
   // CORS
   app.enableCors({
@@ -190,7 +192,8 @@ async function bootstrap() {
   await app.listen(port);
   
   console.log(\`🚀 Server running on http://localhost:\${port}\`);
-  console.log(\`📚 Health check: http://localhost:\${port}/api/health\`);
+  console.log(\`📚 Health check: http://localhost:\${port}/health\`);
+  console.log(\`📚 API endpoint: http://localhost:\${port}/api\`);
 }
 
 bootstrap();
@@ -279,7 +282,8 @@ export class HealthModule {}
 
     await writeFile(path.join(this.backendPath, 'src', 'health', 'health.module.ts'), module);
 
-    // Health Controller
+    // Health Controller - uses simple endpoint that returns { status: 'ok' }
+    // Note: The health route is registered WITHOUT the /api prefix to match frontend expectations
     const controller = `import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, MemoryHealthIndicator } from '@nestjs/terminus';
 
@@ -290,22 +294,24 @@ export class HealthController {
     private memory: MemoryHealthIndicator,
   ) {}
 
+  // Simple health check that returns { status: 'ok' } for frontend compatibility
   @Get()
-  @HealthCheck()
-  check() {
-    return this.health.check([
-      () => this.memory.checkHeap('memory_heap', 150 * 1024 * 1024),
-    ]);
-  }
-
-  @Get('ping')
-  ping() {
+  simpleCheck() {
     return {
       status: 'ok',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       environment: process.env.NODE_ENV || 'development',
     };
+  }
+
+  // Detailed health check using Terminus
+  @Get('detailed')
+  @HealthCheck()
+  detailedCheck() {
+    return this.health.check([
+      () => this.memory.checkHeap('memory_heap', 150 * 1024 * 1024),
+    ]);
   }
 }
 `;
@@ -422,7 +428,7 @@ CORS_ORIGIN=http://localhost:${this.config.frontend.port}
       parser: '@typescript-eslint/parser',
       parserOptions: {
         project: 'tsconfig.json',
-        tsconfigRootDir: '__dirname',
+        tsconfigRootDir: '.',
         sourceType: 'module',
       },
       plugins: ['@typescript-eslint/eslint-plugin'],

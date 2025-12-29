@@ -17,5 +17,7 @@ export declare class VueGenerator extends BaseGenerator {
     private generateStyles;
     private generateEnvExample;
     private generateEslintConfig;
+    private generateComposables;
+    private generateFavicon;
 }
 //# sourceMappingURL=vue.d.ts.map

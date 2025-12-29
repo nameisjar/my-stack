@@ -16,5 +16,7 @@ export declare class ReactGenerator extends BaseGenerator {
     private generateStyles;
     private generateEnvExample;
     private generateEslintConfig;
+    private generateHooks;
+    private generateFavicon;
 }
 //# sourceMappingURL=react.d.ts.map
